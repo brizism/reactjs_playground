@@ -27,7 +27,8 @@ class App extends React.Component {
         
         chatManager.connect()
         .then(currentUser => {
-            currentUser.subscribeToRoom({
+          this.currentUser = currentUser
+          this.currentUser.subscribeToRoom({
                 roomId: 14472165,
                 hooks: {
                     onNewMessage: message => {
@@ -39,13 +40,20 @@ class App extends React.Component {
             })
         })
     }
+
+    sendMessage = (text) => {
+      this.currentUser.sendMessage({
+        text,
+        roomId: 14472165
+      })
+    }
     
     render() {
         return (
             <div className="app">
                 <RoomList />
                 <MessageList messages={this.state.messages} />
-                <SendMessageForm />
+                <SendMessageForm  sendMessage={this.sendMessage} />
                 <NewRoomForm />
             </div>
         );
